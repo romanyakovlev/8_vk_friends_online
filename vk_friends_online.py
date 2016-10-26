@@ -22,7 +22,8 @@ def get_online_friends(login, password):
 
 
 def output_friends_to_console(friends_online):
-    friends_online_list = [' '.join([friend['first_name'], friend['last_name']]) for friend in friends_online if friend['online']]
+    friends_online_list = [' '.join([friend['first_name'], friend['last_name']])
+                           for friend in friends_online if friend['online']]
     friends_online_number = len(friends_online_list)
     print('\nТвои друзья в онлайне\nСколько: {}\nКто:'.format(friends_online_number))
     for friend in friends_online_list:
