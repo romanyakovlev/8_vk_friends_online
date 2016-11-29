@@ -1,5 +1,5 @@
 import vk
-
+import getpass
 APP_ID = 5578596
 
 
@@ -8,26 +8,26 @@ def get_user_login():
 
 
 def get_user_password():
-    return input('\nВведите пароль:\n')
+    return getpass.getpass('\nВведите пароль:\n')
 
 
 def get_online_friends(login, password):
     session = vk.AuthSession(
-        app_id=APP_ID,
-        user_login=login,
-        user_password=password,
+        app_id = APP_ID,
+        user_login = login,
+        user_password = password,
+        scope = ('friends')
     )
     api = vk.API(session)
-    return api.friends.get(fields={'online'})
+    online_user_ids = set(api.friends.getOnline())
+    return api.users.get(user_ids = online_user_ids)
 
 
-def output_friends_to_console(friends_online):
-    friends_online_list = [' '.join([friend['first_name'], friend['last_name']])
-                           for friend in friends_online if friend['online']]
-    friends_online_number = len(friends_online_list)
-    print('\nТвои друзья в онлайне\nСколько: {}\nКто:'.format(friends_online_number))
+def output_friends_to_console(friends_online_list):
+    print('Твои друзья в онлайне\nСколько: {}\nКто:'.format(len(friends_online_list)))
     for friend in friends_online_list:
-        print(friend)
+        print(' '.join([friend['first_name'], friend['last_name']]))
+
 
 if __name__ == '__main__':
     login = get_user_login()
